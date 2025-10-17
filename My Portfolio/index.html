@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genevive Mbonu | Front End Developer</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="#home" class="logo">Genevive.</a>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <!-- <li><a href="#contact">Contact</a></li> -->
+    </ul>
+    <a href="#contact" class="cta">Contact Me</a>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header id="home">
+    <div class="hero fade-in">
+      <div class="hero-text">
+        <h1>Hello, I'm <span>Genevive Mbonu</span></h1>
+        <h2>Front End Developer</h2>
+        <p>I’m a passionate Front-End Developer building responsive, interactive, and user-friendly web experiences that merge creativity and functionality.</p>
+        <a href="#projects" class="btn">See My Work</a>
+      </div>
+      <div class="hero-image">
+        <img src="main.png" alt="Genevive Mbonu portrait" />
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="fade-in">
+    <div class="container">
+      <h2>About Me</h2>
+      <p>I’m Genevive Mbonu, a Front-End Developer with a background in marketing and administrative operations. Trained at AltSchool Africa and currently advancing into Full Stack Development at Codar Institute, I specialize in crafting responsive, interactive, and user-friendly web interfaces that combine creativity with logic.</p>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="fade-in">
+    <div class="container">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill">HTML5 & CSS3</div>
+        <div class="skill">JavaScript (ES6+)</div>
+        <div class="skill">React.js</div>
+        <div class="skill">Responsive Design</div>
+        <div class="skill">API Integration</div>
+        <div class="skill">Git & GitHub</div>
+        <div class="skill">SEO Optimization</div>
+        <div class="skill">UI/UX Design</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="services" class="fade-in">
+    <div class="container">
+      <h2>Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>Web Development</h3>
+          <p>Custom responsive websites built with clean HTML, CSS, and JavaScript.</p>
+        </div>
+        <div class="service-card">
+          <h3>SEO Optimization</h3>
+          <p>Improving site visibility and performance for better engagement.</p>
+        </div>
+        <div class="service-card">
+          <h3>API Integration</h3>
+          <p>Connecting front-end apps to external data sources securely and efficiently.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" class="fade-in">
+    <div class="container">
+      <h2>Projects</h2>
+      <div id="repo-list">Loading projects...</div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="fade-in">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <p>Have a project in mind or want to say hi? Let’s connect.</p>
+      <div class="contact-links">
+        <a href="mailto:mbonuijeoma649@gmail.com">mbonuijeoma649@gmail.com</a>
+        <a href="https://github.com/Genevive574" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/genevive-ijeoma/" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 Genevive Mbonu. All Rights Reserved.</p>
+  </footer>
+
+  <!-- ===== JS: FETCH PROJECTS + SCROLL EFFECTS ===== -->
+  <script>
+    // Fetch GitHub repos dynamically
+    const repoList = document.getElementById('repo-list');
+    fetch('https://api.github.com/users/Genevive574/repos')
+      .then(res => res.json())
+      .then(repos => {
+        repoList.innerHTML = '';
+        repos.forEach(repo => {
+          if (repo.fork) return;
+          const div = document.createElement('div');
+          div.className = 'project-item';
+          div.innerHTML = `<h3>${repo.name}</h3><p>${repo.description || ''}</p><a href="${repo.html_url}" target="_blank">View on GitHub</a>`;
+          repoList.appendChild(div);
+        });
+      });
+
+    // Navbar highlight on scroll
+    const sections = document.querySelectorAll("section, header[id]");
+    const navLinks = document.querySelectorAll("nav a");
+
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= sectionTop - sectionHeight / 3) {
+          current = section.getAttribute("id");
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${current}`) {
+          link.classList.add("active");
+        }
+      });
+    });
+
+    // Fade-in animation when scrolling into view
+    const faders = document.querySelectorAll(".fade-in");
+    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("appear");
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
+
+</body>
+</html>
